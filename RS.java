@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
 
 public class RS extends JFrame {
@@ -8,12 +10,14 @@ public class RS extends JFrame {
     JLabel name, sign, info, menulabel;
     JButton back2main, picture;
     
-    
     public RS(String msg) {
         // 화면 크기 초기 설정
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int frameWidth = screenSize.width / 2;
         int frameHeight = screenSize.height;
+
+        // 테두리 초기 설정
+        Border b = BorderFactory.createLineBorder(Color.black, 1);
 
         // 창 생성
         f = new JFrame(msg);
@@ -31,15 +35,18 @@ public class RS extends JFrame {
         profile = new JPanel();
         profile.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10)); // 레이아웃 및 간격 설정
         profile.setPreferredSize(new Dimension(frameWidth, (int) (200 * 2 / 3.0))); // 크기 설정
-        profile.setBackground(new Color(0, 71, 171)); // 배경색 설정(코발트 블루)
+        profile.setBackground(Color.WHITE); // 배경색 설정(흰색)
 
         // 버튼 생성 (메인화면으로 돌아갈 수 있도록)
-        back2main = new JButton("메인");
-        back2main.setPreferredSize(new Dimension(75, 75)); // 크기 설정(정사각형)
+        ImageIcon backIcon = new ImageIcon("C:\\yeons\\java\\final\\images\\back2main.jpeg");
+        Image backImage = backIcon.getImage().getScaledInstance(55, 55, Image.SCALE_SMOOTH); // 사진 크기 설정
+        back2main = new JButton(new ImageIcon(backImage));
+        back2main.setPreferredSize(new Dimension(55, 55)); // 크기 설정
         
         // 매장 간판 레이블 생성
         sign = new JLabel(new ImageIcon(new ImageIcon("").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH))); // 버튼 사진 추가
         sign.setPreferredSize(new Dimension(100, 100)); // 크기 설정
+        sign.setBorder(b);
         sign.setBackground(Color.WHITE); // 배경색 설정(흰색)
         sign.setOpaque(true);
         
@@ -47,6 +54,7 @@ public class RS extends JFrame {
         name = new JLabel("매장 이름", SwingConstants.CENTER);
         name.setPreferredSize(new Dimension((frameWidth - (75 + 100 + 60)) * 3 / 4, 100)); // 크기 설정
         name.setBackground(Color.WHITE); // 배경색 설정(흰색)
+        name.setBorder(b); // 테두리 설정
         name.setOpaque(true);
         name.setFont(new Font("맑은고딕",Font.BOLD, 20)); // 글자체 효과 크기 지정
         
@@ -58,11 +66,12 @@ public class RS extends JFrame {
         information = new JPanel();
         information.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
         information.setPreferredSize(new Dimension(frameWidth, (int) (200 * 2 / 3.0 - 10))); // 크기 설정
-        information.setBackground(new Color(0, 71, 171)); // 배경색 설정(코발트 블루)
+        information.setBackground(Color.WHITE); // 배경색 설정(흰색)
 
         // 매장 정보 레이블 생성
         info = new JLabel("매장정보(주소/전화번호)", SwingConstants.CENTER); 
         info.setPreferredSize(new Dimension(frameWidth - 120, 90)); // 크기 설정
+        info.setBorder(b);
         info.setBackground(Color.WHITE); // 배경색 설정(흰색)
         info.setOpaque(true);
         info.setFont(new Font("맑은고딕",Font.BOLD, 18)); // 글자체 효과 크기 지정
@@ -78,18 +87,19 @@ public class RS extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10); // 각 레이블 사이의 간격 설정
 
         int buttonSize = (frameWidth - 80) / 3; // 버튼 크기 설정
-        int buttonHeight = buttonSize * 3 / 2;
+        int buttonHeight = buttonSize * 5 / 4;
 
         // 메뉴판 설정 (임시로 12개의 레이블과 버튼 생성)
         for (int i = 1; i <= 12; i++) {
             item = new JPanel();
             item.setLayout(new BorderLayout());
             item.setBackground(Color.WHITE);
+            item.setBorder(b);
 
             picture = new JButton(new ImageIcon(new ImageIcon("").getImage().getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH))); // 버튼 사진 추가
             picture.setPreferredSize(new Dimension(buttonSize, buttonSize)); // 크기 설정(정사각형)
             
-            menulabel = new JLabel(i + ". Menu Item " + " (Price)", SwingConstants.CENTER); // 번호. 메뉴명 (가격)
+            menulabel = new JLabel(i + ". 메뉴 이름 " + " (가격)", SwingConstants.CENTER); // 번호. 메뉴명 (가격)
             menulabel.setPreferredSize(new Dimension(buttonSize, buttonHeight - buttonSize)); // 레이블 높이는 남은 공간으로 설정
             menulabel.setBackground(Color.WHITE); // 배경색 설정(흰색)
             menulabel.setOpaque(true);
