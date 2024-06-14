@@ -1,7 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.Border;
-
 import java.awt.*;
+import java.awt.event.*;
 
 public class RS extends JFrame {
     
@@ -20,7 +20,10 @@ public class RS extends JFrame {
         int frameHeight = screenSize.height;
 
         // 테두리 초기 설정
-        Border b = BorderFactory.createLineBorder(Color.black, 1);
+        Border b = BorderFactory.createLineBorder(new Color(255,140,0), 4);
+
+        // 글자 초기 설정
+        Font defaultFont = new Font("국민연금체", Font.PLAIN, 13);
 
         // 창 생성
         f = new JFrame(msg);
@@ -45,12 +48,12 @@ public class RS extends JFrame {
         Image backImage = backIcon.getImage().getScaledInstance(55, 55, Image.SCALE_SMOOTH); // 사진 크기 설정
         back2main = new JButton(new ImageIcon(backImage));
         back2main.setPreferredSize(new Dimension(55, 55)); // 크기 설정
+        addHoverEffect(back2main);
         
         // 매장 간판 레이블 생성
         Image signImage = db.signIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH); // 사진 크기 설정
         sign = new JLabel(new ImageIcon(signImage));
         sign.setPreferredSize(new Dimension(100, 100)); // 크기 설정
-        sign.setBorder(b);
         sign.setBackground(Color.WHITE); // 배경색 설정(흰색)
         sign.setOpaque(true);
         
@@ -60,7 +63,7 @@ public class RS extends JFrame {
         name.setBackground(Color.WHITE); // 배경색 설정(흰색)
         name.setBorder(b); // 테두리 설정
         name.setOpaque(true);
-        name.setFont(new Font("맑은고딕",Font.BOLD, 28)); // 글자체 효과 크기 지정
+        name.setFont(new Font("국민연금체",Font.BOLD, 28)); // 글자체 효과 크기 지정
         
         profile.add(back2main); // 레이블 및 버튼 패널에 추가
         profile.add(sign);
@@ -78,7 +81,7 @@ public class RS extends JFrame {
         info.setBorder(b);
         info.setBackground(Color.WHITE); // 배경색 설정(흰색)
         info.setOpaque(true);
-        info.setFont(new Font("맑은고딕",Font.BOLD, 18)); // 글자체 효과 크기 지정
+        info.setFont(new Font("국민연금체",Font.BOLD, 18)); // 글자체 효과 크기 지정
 
         information.add(info); // 레이블 패널에 추가
 
@@ -95,7 +98,7 @@ public class RS extends JFrame {
         int buttonHeight = buttonSize * 4 / 3;
 
         // 메뉴판 설정 (임시로 12개의 레이블과 버튼 생성)
-        for (int i = 1; i <= 9; i++) {
+        for (int i = 1; i <= db.menudata.length; i++) {
             item = new JPanel();
             item.setLayout(new BorderLayout());
             item.setBackground(Color.WHITE);
@@ -105,12 +108,13 @@ public class RS extends JFrame {
             Image itemImage = itemIcon.getImage().getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
             picture = new JButton(new ImageIcon(itemImage));
             picture.setPreferredSize(new Dimension(buttonSize, buttonSize)); // 정사각형 크기 설정
+            addHoverEffect(picture);
             
             menulabel = new JLabel(db.menudata[i - 1], SwingConstants.CENTER); // 번호. 메뉴명 (가격)
             menulabel.setPreferredSize(new Dimension(buttonSize, buttonHeight - buttonSize)); // 레이블 높이는 남은 공간으로 설정
             menulabel.setBackground(Color.WHITE); // 배경색 설정(흰색)
             menulabel.setOpaque(true);
-            menulabel.setFont(new Font("맑은고딕",Font.BOLD, 16)); // 글자체 효과 크기 지정
+            menulabel.setFont(defaultFont); // 글자체 효과 크기 지정
 
             item.add(picture, BorderLayout.CENTER); // 패널에 레이블과 사진 추가
             item.add(menulabel, BorderLayout.SOUTH);
@@ -131,5 +135,25 @@ public class RS extends JFrame {
         f.add(scrollPane);
 
         f.setVisible(true);
+    }
+
+    // 버튼에 마우스 호버 효과 및 둥근 테두리 추가
+    private void addHoverEffect(JButton button) {
+        // 마우스 호버 효과 추가
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBorderPainted(true); // 마우스가 버튼에 들어가면 테두리 그리기
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBorderPainted(false); // 마우스가 버튼에서 나가면 테두리 숨기기
+            }
+        });
+
+        // 둥근 테두리 추가
+        Border roundedBorder = BorderFactory.createLineBorder(new Color(255,140,0), 4, true);
+        button.setBorder(roundedBorder);
     }
 }
