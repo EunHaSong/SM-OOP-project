@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
 public class FirstTimeMyPage extends JFrame {
     // 화면 크기 가져오기
     Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -54,19 +53,44 @@ public class FirstTimeMyPage extends JFrame {
 
         // 식당 정보 등록 버튼
         JButton addButton = new JButton("식당 정보 등록하기");
-        addButton.setPreferredSize(new Dimension(halfScreenWidth-400,200)); // 버튼 크기 변경
-        addButton.setFont(new Font("NPS font", Font.PLAIN, 20));
+        addButton.setPreferredSize(new Dimension(halfScreenWidth - 400, 200)); // 버튼 크기 변경
+        addButton.setFont(new Font("NPS font", Font.PLAIN, 30));
         addButton.addActionListener(new AddButtonListener()); // 액션 리스너 추가
-        addButton.setBorderPainted(false); // 버튼 테두리 숨기기
+        addButton.setBorderPainted(true); // 버튼 테두리 숨기기
         addHoverEffect(addButton); // 마우스 호버 효과 추가
 
         // 식당 정보 등록 버튼 패널 생성
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(null); // 위치 조정을 위해 레이아웃을 null로 설정
         buttonPanel.add(addButton);
-        addButton.setBounds(200, screenHeight / 4, halfScreenWidth - 400, 200); // 버튼 위치와 크기 설정
+        addButton.setBounds(200, screenHeight / 6, halfScreenWidth - 400, 150); // 버튼 위치와 크기 설정 (y 좌표 변경)
         buttonPanel.setBackground(Color.WHITE);
-        add(buttonPanel); // 버튼을 패널에 추가
+        add(buttonPanel, BorderLayout.CENTER); // 버튼 패널을 프레임의 중앙에 추가
+
+        // 이미지 패널 생성
+        JPanel imagePanel = new JPanel();
+        imagePanel.setLayout(new GridLayout(1, 2, 20, 20)); // 1행 2열, 가로 간격 20, 세로 간격 20
+        imagePanel.setBackground(Color.WHITE);
+
+        // 이미지 추가
+        ImageIcon image1 = new ImageIcon("image/character_line02_10.png");
+        Image img1 = image1.getImage().getScaledInstance(200, 320, Image.SCALE_SMOOTH); // 이미지 크기 조절
+        ImageIcon scaledImage1 = new ImageIcon(img1);
+        JLabel label1 = new JLabel(scaledImage1);
+        label1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // 이미지 여백 설정
+
+        ImageIcon image2 = new ImageIcon("image/character_line02_04.png");
+        Image img2 = image2.getImage().getScaledInstance(200, 320, Image.SCALE_SMOOTH); // 이미지 크기 조절
+        ImageIcon scaledImage2 = new ImageIcon(img2);
+        JLabel label2 = new JLabel(scaledImage2);
+        label2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // 이미지 여백 설정
+
+        imagePanel.add(label1);
+        imagePanel.add(label2);
+
+        add(imagePanel, BorderLayout.SOUTH); // 이미지 패널을 프레임의 하단에 추가
+
+
 
         // 제목 라벨과 "전체" 버튼을 포함할 패널 생성
         JPanel titlePanel = new JPanel(new BorderLayout());
@@ -74,6 +98,7 @@ public class FirstTimeMyPage extends JFrame {
         titlePanel.add(browseButton, BorderLayout.EAST);
         titlePanel.setBackground(Color.WHITE);
         add(titlePanel, BorderLayout.NORTH); // 제목 패널을 프레임의 북쪽에 추가
+
 
         setVisible(true); // 프레임 표시
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 프레임 닫기 설정
