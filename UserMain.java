@@ -7,12 +7,15 @@ public class UserMain {
         // ThreePaneSplit 창 생성
         UserTPS mainFrame = new UserTPS("사용자 화면");
 
-        // RS 패널 생성
+        // 패널 생성
         UserRS rsPanel = new UserRS();
+        ReviewPage rPage = new ReviewPage();
+        ReviewBoard2 rBoard2 = new ReviewBoard2();
 
-        // RS 패널을 leftPanel에 추가
+        // 메인프레임 패널 추가
         mainFrame.getLeftPanel().add(rsPanel, BorderLayout.CENTER);
-
+        mainFrame.getTopRightPanel().add(rBoard2);
+        mainFrame.getBottomRightPanel().add(rPage);
         mainFrame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         mainFrame.setVisible(true);
     }
