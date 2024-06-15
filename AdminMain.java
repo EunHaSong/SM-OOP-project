@@ -9,14 +9,15 @@ public class AdminMain {
         // ThreePaneSplit 창 생성
         AdminTPS mainFrame = new AdminTPS("관리자 화면");
 
-        // RS 패널 생성
+        // 패널 생성
         AdminRS rsPanel = new AdminRS();
         AdminInfo infoPanel = new AdminInfo(null);
-        
+        ReviewBoard2 rBoard2 = new ReviewBoard2();
+
         // 메인프레임 패널 추가
         mainFrame.getLeftPanel().add(rsPanel, BorderLayout.CENTER);
-        //mainFrame.gettopRightPanel().add()
-        mainFrame.getbottomRightPanel().add(infoPanel);
+        mainFrame.getTopRightPanel().add(rBoard2);
+        mainFrame.getBottomRightPanel().add(infoPanel);
         mainFrame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         mainFrame.setVisible(true);
     }

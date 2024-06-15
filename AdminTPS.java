@@ -36,11 +36,11 @@ class AdminTPS extends JFrame {
         return leftPanel;
     }
 
-    public JPanel gettopRightPanel() {
+    public JPanel getTopRightPanel() {
         return topRightPanel;
     }
 
-    public JPanel getbottomRightPanel() {
+    public JPanel getBottomRightPanel() {
         return bottomRightPanel;
     }
 }
