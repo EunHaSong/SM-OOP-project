@@ -26,6 +26,7 @@ public class RestaurantList extends JFrame {
 
 
     public RestaurantList(String category) {
+
         // 프레임 크기를 화면 너비의 절반과 전체 화면 높이로 설정
         setSize(halfScreenWidth, screenHeight);
 
@@ -38,13 +39,13 @@ public class RestaurantList extends JFrame {
         // 제목 라벨 생성
         JLabel label = new JLabel(category);
         label.setPreferredSize(new Dimension(halfScreenWidth, 60)); // 라벨의 크기 설정
-        label.setFont(new Font("Helvetica", Font.BOLD, 30));
+        label.setFont(new Font("NPS font", Font.BOLD, 30));
         label.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0)); // 제목의 왼쪽에 여백을 준다
 
         // "정렬" 버튼 생성
         JButton etcButton = new JButton("정렬");
         etcButton.setPreferredSize(new Dimension(60, 30));
-        etcButton.setFont(new Font("Helvetica", Font.BOLD, 20));
+        etcButton.setFont(new Font("NPS font", Font.BOLD, 20));
         etcButton.addActionListener(new SortButtonListener());
         etcButton.setBorderPainted(false); // 버튼 테두리 숨기기
         etcButton.setContentAreaFilled(false); // 버튼 배경 숨기기
@@ -54,11 +55,13 @@ public class RestaurantList extends JFrame {
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.add(label, BorderLayout.CENTER);
         titlePanel.add(etcButton, BorderLayout.EAST);
+        titlePanel.setBackground(Color.WHITE);
         add(titlePanel, BorderLayout.NORTH); // 제목 패널을 프레임의 북쪽에 추가
 
         // 식당 정보를 출력할 패널 생성
         JPanel restaurantPanel = new JPanel();
         restaurantPanel.setLayout(new BoxLayout(restaurantPanel, BoxLayout.Y_AXIS));
+        restaurantPanel.setBackground(Color.WHITE);
 
         // 텍스트 파일에서 식당 정보 읽기
         List<Restaurant> restaurants = readRestaurantData("DataSortedByRating.txt");
@@ -66,7 +69,7 @@ public class RestaurantList extends JFrame {
         // 식당별 버튼과 사진 생성
         for (Restaurant restaurant : restaurants) {
             String starRating = getStarRating(restaurant.rating);
-            String buttonText = String.format("<html><b style='font-size:16px;'>%s</b><br>" +
+            String buttonText = String.format("<html><b style='font-size:20px;'>%s</b><br>" +
                             "%s (%.1f)&nbsp;&nbsp;&nbsp;리뷰수: %d<br>" +
                             "주메뉴: %s<br>" +
                             "주소: %s<br>" +
@@ -89,7 +92,7 @@ public class RestaurantList extends JFrame {
             gbc.fill = GridBagConstraints.BOTH;
 
             JLabel textLabel = new JLabel(buttonText);
-            textLabel.setFont(new Font("Helvetica", Font.PLAIN, 16));
+            textLabel.setFont(new Font("NPS font", Font.PLAIN, 20));
             button.add(textLabel, gbc);
 
             // 식당 이미지 추가
@@ -226,8 +229,9 @@ public class RestaurantList extends JFrame {
             }
         });
 
-        // 둥근 테두리 추가
-        Border roundedBorder = BorderFactory.createLineBorder(Color.CYAN, 4, true);
+        // 둥근 테두리 추가 (DarkOrange 색상 사용)
+        Color darkOrangeColor = new Color(255, 140, 0); // RGB(255, 140, 0)
+        Border roundedBorder = BorderFactory.createLineBorder(darkOrangeColor, 4, true);
         button.setBorder(roundedBorder);
     }
 }
