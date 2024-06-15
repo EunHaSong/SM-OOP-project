@@ -1,9 +1,12 @@
+import java.awt.*;
+import java.awt.event.*;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.*;
+import java.util.List;
 
 class CreateAdminPanel extends JPanel {
 
@@ -14,19 +17,10 @@ class CreateAdminPanel extends JPanel {
         int frameHeight = screenSize.height;
 
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(frameWidth / 2, frameHeight / 2)); // 4개 패널로 나누기 위해 크기 조정
+        setPreferredSize(new Dimension(frameWidth / 2, frameHeight / 2)); 
         setBackground(Color.WHITE);
 
-        // Load custom font
-        Font customFont;
-        try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("/Users/sunghyunkim/Desktop/sookre/NPSfont_regular")).deriveFont(12f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(customFont);
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-            customFont = new Font("Serif", Font.PLAIN, 12); // Fallback to default font if loading fails
-        }
+        Font customFont = new Font("NPS font", Font.PLAIN, 12); // Fallback to default font if loading fails
 
         // 이미지를 표시할 라벨
         JLabel imageLabel = new JLabel("+ 음식사진을 업로드하세요", SwingConstants.CENTER);
@@ -75,6 +69,7 @@ class CreateAdminPanel extends JPanel {
         controlPanel.add(searchField);
         controlPanel.add(searchButton);
 
+
         add(controlPanel, BorderLayout.CENTER);
 
         // 입력 필드를 포함한 Panel
@@ -110,12 +105,39 @@ class CreateAdminPanel extends JPanel {
         inputPanel.add(registerButton);
 
         registerButton.addActionListener(e -> {
-            JFrame newFrame = new JFrame("완료");
-            newFrame.setSize(400, 300);
-            newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            newFrame.getContentPane().setBackground(Color.WHITE); 
-            newFrame.add(new JLabel("메뉴와 할인정보가 등록되었습니다.", SwingConstants.CENTER));
-            newFrame.setVisible(true);
+            String menu = menuTextField.getText();
+            String price = priceTextField.getText();
+            String discount = discountTextField.getText();
+
+            if (!menu.isEmpty() && !price.isEmpty() && !discount.isEmpty()) {
+                try {
+                    Path path = Paths.get("/Users/sunghyunkim/Desktop/sookre/src/관리자용정보등록.csv");
+                    boolean fileExists = Files.exists(path);
+
+                    try (BufferedWriter writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+                        if (!fileExists) {
+                            writer.write("메뉴,가격,할인 정보");
+                            writer.newLine();
+                        }
+                        writer.write(String.join(",", menu, price, discount));
+                        writer.newLine();
+                    }
+
+                    JFrame newFrame = new JFrame("완료");
+                    newFrame.setSize(400, 300);
+                    newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    newFrame.getContentPane().setBackground(Color.WHITE); 
+                    JLabel completionLabel = new JLabel("메뉴와 할인정보가 등록되었습니다.", SwingConstants.CENTER);
+                    completionLabel.setFont(customFont); // Set custom font for the label
+                    newFrame.add(completionLabel);
+                    newFrame.setVisible(true);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "파일 저장 중 오류가 발생했습니다.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "모든 필드를 입력해주세요.", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
         });
 
         add(inputPanel, BorderLayout.SOUTH);
@@ -138,8 +160,7 @@ class CreateAdminPanel extends JPanel {
         button.setBorder(roundedBorder);
 
         // 글자색과 글꼴 설정
-        button.setFont(new Font("국민연금체", Font.PLAIN, 13));
+        button.setFont(new Font("NPS font", Font.PLAIN, 12));
         button.setForeground(Color.BLACK); // 검은색으로 설정
     }
 }
-
