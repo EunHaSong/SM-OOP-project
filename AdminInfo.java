@@ -111,7 +111,7 @@ class AdminInfo extends JPanel {
 
             if (!menu.isEmpty() && !price.isEmpty() && !discount.isEmpty()) {
                 try {
-                    Path path = Paths.get("\"C:\\yeons\\java\\final\\src\\관리자용정보등록.csv\"");
+                    Path path = Paths.get("C:\\yeons\\java\\final\\src\\관리자용정보등록.csv");
                     boolean fileExists = Files.exists(path);
 
                     try (BufferedWriter writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
