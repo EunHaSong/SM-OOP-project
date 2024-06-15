@@ -129,7 +129,7 @@ public class ReviewBoard2 extends JPanel {
 
     private ArrayList<Review> loadReviews() {
         ArrayList<Review> loadedReviews = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("reviews.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\yeons\\java\\final\\src\\reviews.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
