@@ -28,27 +28,29 @@ public class FoodCategory extends JFrame {
         // 제목 라벨 생성
         JLabel titleLabel = new JLabel("음식 종류별 카테고리");
         titleLabel.setPreferredSize(new Dimension(halfScreenWidth, 100)); // 라벨의 크기 설정
-        titleLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
+        titleLabel.setFont(new Font("NPS font", Font.BOLD, 30)); // 폰트 변경
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0)); // 왼쪽 마진 추가
 
-        // "기타" 버튼 생성
-        JButton etcButton = new JButton("기타");
+        // "전체" 버튼 생성
+        JButton etcButton = new JButton("전체");
         etcButton.setPreferredSize(new Dimension(100, 100));
-        etcButton.setFont(new Font("Helvetica", Font.BOLD, 20));
+        etcButton.setFont(new Font("NPS font", Font.BOLD, 20)); // 폰트 변경
         etcButton.addActionListener(new CategoryButtonListener());
         etcButton.setBorderPainted(false); // 버튼 테두리 숨기기
         etcButton.setContentAreaFilled(false); // 버튼 배경 숨기기
         addHoverEffect(etcButton); // 마우스 호버 효과 및 둥근 테두리 추가
 
-        // 제목 라벨과 "기타" 버튼을 포함할 패널 생성
+        // 제목 라벨과 "전체" 버튼을 포함할 패널 생성
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.add(titleLabel, BorderLayout.CENTER);
         titlePanel.add(etcButton, BorderLayout.EAST);
+        titlePanel.setBackground(Color.WHITE);
         add(titlePanel, BorderLayout.NORTH); // 제목 패널을 프레임의 북쪽에 추가
 
         // 버튼을 위한 패널 생성
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(2, 4, 5, 8)); // 2행 4열, 5px 가로 간격, 8px 세로 간격
+        buttonPanel.setBackground(Color.WHITE);
         add(buttonPanel, BorderLayout.CENTER); // 버튼 패널을 프레임의 중앙에 추가
 
         // 각 카테고리 버튼 생성
@@ -70,14 +72,15 @@ public class FoodCategory extends JFrame {
 
                 // 버튼 생성
                 JButton button = new JButton(category, updatedIcon);
-                button.setPreferredSize(new Dimension(halfScreenWidth / 4, (screenHeight - 100) / 2)); // 버튼 크기 설정
+                button.setPreferredSize(new Dimension(halfScreenWidth / 4, (screenHeight - 100) / 2));
                 button.setVerticalTextPosition(SwingConstants.BOTTOM);
                 button.setHorizontalTextPosition(SwingConstants.CENTER);
-                button.setFont(new Font("Helvetica", Font.BOLD, 16)); // 폰트 설정
+                // 폰트 변경 - "국민연금체" 폰트 사용
+                button.setFont(new Font("NPS font", Font.BOLD, 20));
                 button.addActionListener(new CategoryButtonListener());
-                button.setBorderPainted(false);   // 버튼 테두리 숨기기
-                button.setContentAreaFilled(false); // 버튼 배경 숨기기
-                addHoverEffect(button); // 마우스 호버 효과 및 둥근 테두리 추가
+                button.setBorderPainted(false);
+                button.setContentAreaFilled(false);
+                addHoverEffect(button);
                 buttonPanel.add(button);
             } else {
                 buttonPanel.add(new JLabel("")); // 빈 셀 추가
@@ -120,8 +123,10 @@ public class FoodCategory extends JFrame {
             }
         });
 
-        // 둥근 테두리 추가
-        Border roundedBorder = BorderFactory.createLineBorder(Color.CYAN, 4, true);
+        // 둥근 테두리 추가 (DarkOrange 색상 사용)
+        Color darkOrangeColor = new Color(255, 140, 0); // RGB(255, 140, 0)
+        Border roundedBorder = BorderFactory.createLineBorder(darkOrangeColor, 4, true);
         button.setBorder(roundedBorder);
+
     }
 }
