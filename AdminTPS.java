@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 class AdminTPS extends JFrame {
@@ -7,44 +6,41 @@ class AdminTPS extends JFrame {
 
     public AdminTPS(String msg) {
         super(msg);
-        setLayout(new GridBagLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1;
-        gbc.weighty = 1;
-
-        // Create panels for the 3 sections
+        // Left Panel
         leftPanel = new JPanel(new BorderLayout());
-        topRightPanel = new JPanel();
-        bottomRightPanel = new JPanel();
 
-        leftPanel.setBorder(BorderFactory.createTitledBorder("식당 화면"));
-        topRightPanel.setBorder(BorderFactory.createTitledBorder("정보 등록 화면"));
-        bottomRightPanel.setBorder(BorderFactory.createTitledBorder("리뷰 보기 화면"));
+        // Right Panels
+        topRightPanel = new JPanel(new BorderLayout());
+        bottomRightPanel = new JPanel(new BorderLayout());
 
-        // Add panels to the frame with GridBagConstraints
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridheight = 2;  // spans 2 rows
-        add(leftPanel, gbc);
+        // Split pane for the right side (top and bottom)
+        JSplitPane rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topRightPanel, bottomRightPanel);
+        rightSplitPane.setResizeWeight(0.5); // Equally split the space
+        rightSplitPane.setDividerSize(0); // Divider size set to 0
 
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.gridheight = 1;  // spans 1 row
-        add(topRightPanel, gbc);
+        // Split pane for the entire frame (left and right)
+        JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightSplitPane);
+        mainSplitPane.setResizeWeight(0.5); // Equally split the space
+        mainSplitPane.setDividerSize(0); // Divider size set to 0
 
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        add(bottomRightPanel, gbc);
+        add(mainSplitPane);
 
-        setSize(1200, 800);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
     public JPanel getLeftPanel() {
         return leftPanel;
+    }
+
+    public JPanel gettopRightPanel() {
+        return topRightPanel;
+    }
+
+    public JPanel getbottomRightPanel() {
+        return bottomRightPanel;
     }
 }

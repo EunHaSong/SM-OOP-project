@@ -125,37 +125,10 @@ class AdminRS extends JPanel {
         JScrollPane scrollPane = new JScrollPane(whole);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        // 스크롤바의 색상을 다크오렌지로 변경
-        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-            @Override
-            protected void configureScrollBarColors() {
-                this.thumbColor = new Color(255, 140, 0); // 스크롤바 썸 색상
-                this.trackColor = Color.WHITE; // 스크롤바 트랙 색상
-            }
-
-            @Override
-            protected JButton createDecreaseButton(int orientation) {
-                return createZeroButton();
-            }
-
-            @Override
-            protected JButton createIncreaseButton(int orientation) {
-                return createZeroButton();
-            }
-
-            private JButton createZeroButton() {
-                JButton button = new JButton();
-                button.setPreferredSize(new Dimension(0, 0));
-                button.setMinimumSize(new Dimension(0, 0));
-                button.setMaximumSize(new Dimension(0, 0));
-                return button;
-            }
-        });
-
         setLayout(new BorderLayout());
         add(scrollPane, BorderLayout.CENTER);
     }
-    
+
     // 버튼에 마우스 호버 효과 및 둥근 테두리 추가
     private void addHoverEffect(JButton button) {
         // 마우스 호버 효과 추가
@@ -172,7 +145,8 @@ class AdminRS extends JPanel {
         });
 
         // 둥근 테두리 추가
-        Border roundedBorder = BorderFactory.createLineBorder(new Color(255,140,0), 4, true);
-        button.setBorder(roundedBorder);
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        button.setBorderPainted(false); // 초기 상태에서는 테두리 숨기기
+        button.setContentAreaFilled(false); // 버튼의 기본 배경 제거
     }
 }
