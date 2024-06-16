@@ -40,7 +40,7 @@ public class FoodCategory extends JFrame {
         etcButton.setContentAreaFilled(false); // 버튼 배경 숨기기
         addHoverEffect(etcButton); // 마우스 호버 효과 및 둥근 테두리 추가
 
-        // 제목 라벨과 "전체" 버튼을 포함할 패널 생성
+        // 제목 라벨과 "기타" 버튼을 포함할 패널 생성
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.add(titleLabel, BorderLayout.CENTER);
         titlePanel.add(etcButton, BorderLayout.EAST);
