@@ -5,10 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class RestaurantList extends JFrame {
@@ -20,13 +21,11 @@ public class RestaurantList extends JFrame {
     int halfScreenWidth = screenSize.width / 2;
     int screenHeight = screenSize.height;
 
-    private static final String IMAGE_FOLDER_PATH = "restaurant_images/"; // 이미지 폴더 경로
+    private static final String IMAGE_FOLDER_PATH = "store_images"; // 이미지 폴더 경로
     private static final int IMAGE_WIDTH = 200; // 이미지 너비
     private static final int IMAGE_HEIGHT = 150; // 이미지 높이
 
-
     public RestaurantList(String category) {
-
         // 프레임 크기를 화면 너비의 절반과 전체 화면 높이로 설정
         setSize(halfScreenWidth, screenHeight);
 
@@ -42,10 +41,8 @@ public class RestaurantList extends JFrame {
         label.setFont(new Font("NPS font", Font.BOLD, 30));
         label.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0)); // 제목의 왼쪽에 여백을 준다
 
-        // "정렬" 버튼 생성
-        JButton etcButton = new JButton("정렬");
-        etcButton.setPreferredSize(new Dimension(60, 30));
-        etcButton.setFont(new Font("NPS font", Font.BOLD, 20));
+        // 가짜용 "" 공백 버튼 생성
+        JButton etcButton = new JButton("");
         etcButton.addActionListener(new SortButtonListener());
         etcButton.setBorderPainted(false); // 버튼 테두리 숨기기
         etcButton.setContentAreaFilled(false); // 버튼 배경 숨기기
@@ -63,8 +60,11 @@ public class RestaurantList extends JFrame {
         restaurantPanel.setLayout(new BoxLayout(restaurantPanel, BoxLayout.Y_AXIS));
         restaurantPanel.setBackground(Color.WHITE);
 
-        // 텍스트 파일에서 식당 정보 읽기
-        List<Restaurant> restaurants = readRestaurantData("DataSortedByRating.txt");
+        // CSV 파일에서 식당 정보 읽기
+        List<Restaurant> restaurants = readRestaurantData("store_scroll 2.csv", category);
+
+        // 평점 높은 순으로 정렬
+        restaurants.sort(Comparator.comparingDouble(Restaurant::getRating).reversed());
 
         // 식당별 버튼과 사진 생성
         for (Restaurant restaurant : restaurants) {
@@ -96,7 +96,7 @@ public class RestaurantList extends JFrame {
             button.add(textLabel, gbc);
 
             // 식당 이미지 추가
-            String imageFilePath = IMAGE_FOLDER_PATH + restaurant.name + ".jpeg";
+            String imageFilePath = IMAGE_FOLDER_PATH + "/" + restaurant.imageFileName;
             ImageIcon imageIcon = new ImageIcon(new ImageIcon(imageFilePath).getImage().getScaledInstance(IMAGE_WIDTH, IMAGE_HEIGHT, Image.SCALE_SMOOTH));
             JLabel imageLabel = new JLabel(imageIcon);
 
@@ -111,7 +111,7 @@ public class RestaurantList extends JFrame {
             button.setPreferredSize(new Dimension(halfScreenWidth, (screenHeight - 70) / 4)); // 버튼 크기 조정
             button.setBorderPainted(false);
             button.setContentAreaFilled(false);
-            addHoverEffect(button); // 망스 호버 효과 및 둥근 테두리 추가
+            addHoverEffect(button); // 마우스 호버 효과 및 둥근 테두리 추가
 
             restaurantPanel.add(button); // 패널에 버튼 추가
         }
@@ -124,25 +124,36 @@ public class RestaurantList extends JFrame {
         setVisible(true);
     }
 
-    private List<Restaurant> readRestaurantData(String filePath) {
+    private List<Restaurant> readRestaurantData(String filePath, String category) {
         List<Restaurant> restaurants = new ArrayList<>();
-        try {
-            List<String> lines = Files.readAllLines(Paths.get(filePath));
-            for (int i = 0; i < lines.size(); i += 8) {
-                String name = lines.get(i).trim();
-                double rating = Double.parseDouble(lines.get(i + 1).trim());
-                int reviewCount = Integer.parseInt(lines.get(i + 2).trim());
-                String mainDish = lines.get(i + 3).trim();
-                String address = lines.get(i + 4).trim();
-                String hours = lines.get(i + 5).trim();
-                String breakTime = lines.get(i + 6).trim().isEmpty() ? "없음" : lines.get(i + 6).trim();
-                String holidays = lines.get(i + 7).trim().isEmpty() ? "없음" : lines.get(i + 7).trim();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            boolean headerSkipped = false;
+            while ((line = br.readLine()) != null) {
+                if (!headerSkipped) {
+                    headerSkipped = true;
+                    continue; // Skip the header line
+                }
+                String[] fields = line.split(",");
+                String categoryFromFile = fields[0].trim();
+                if (categoryFromFile.equals(category) || category.equals("전체")) {
+                    String name = fields[1].trim();
+                    double rating = Double.parseDouble(fields[2].trim());
+                    int reviewCount = Integer.parseInt(fields[3].trim());
+                    String mainDish = fields[4].trim();
+                    String address = fields[5].trim();
+                    String hours = fields[6].trim();
+                    String breakTime = fields[7].trim().isEmpty() ? "없음" : fields[7].trim();
+                    String holidays = fields[8].trim().isEmpty() ? "없음" : fields[8].trim();
+                    String imageFileName = fields[9].trim();
 
-                restaurants.add(new Restaurant(name, rating, reviewCount, mainDish, address, hours, breakTime, holidays));
+                    restaurants.add(new Restaurant(name, rating, reviewCount, mainDish, address, hours, breakTime, holidays, imageFileName));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         // 포커스를 다른 컴포넌트로 옮겨 기본 포커스를 제거
         addWindowFocusListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -152,9 +163,7 @@ public class RestaurantList extends JFrame {
         });
 
         return restaurants;
-
     }
-
 
     // 평점을 주황색 별표로 변환하는 메서드
     private String getStarRating(double rating) {
@@ -181,8 +190,7 @@ public class RestaurantList extends JFrame {
         return starRating.toString();
     }
 
-
-    // 식당 정보를 저장할 클래스
+    // 수정된 부분: 식당 정보를 저장할 클래스
     static class Restaurant {
         String name;
         double rating;
@@ -192,8 +200,9 @@ public class RestaurantList extends JFrame {
         String hours;
         String breakTime;
         String holidays;
+        String imageFileName;
 
-        public Restaurant(String name, double rating, int reviewCount, String mainDish, String address, String hours, String breakTime, String holidays) {
+        public Restaurant(String name, double rating, int reviewCount, String mainDish, String address, String hours, String breakTime, String holidays, String imageFileName) {
             this.name = name;
             this.rating = rating;
             this.reviewCount = reviewCount;
@@ -202,6 +211,11 @@ public class RestaurantList extends JFrame {
             this.hours = hours;
             this.breakTime = breakTime;
             this.holidays = holidays;
+            this.imageFileName = imageFileName;
+        }
+
+        public double getRating() {
+            return rating;
         }
     }
 
@@ -214,6 +228,8 @@ public class RestaurantList extends JFrame {
             new DataSort(); // 정렬창 열기
         }
     }
+
+
     // 버튼에 마우스 호버 효과 및 둥근 테두리 추가
     private void addHoverEffect(JButton button) {
         // 마우스 호버 효과 추가
@@ -235,3 +251,4 @@ public class RestaurantList extends JFrame {
         button.setBorder(roundedBorder);
     }
 }
+
