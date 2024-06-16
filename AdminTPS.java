@@ -10,6 +10,9 @@ class AdminTPS extends JFrame {
 
         // Left Panel
         leftPanel = new JPanel(new BorderLayout());
+        leftPanel.setPreferredSize(new Dimension(getWidth() / 2, getHeight())); // 왼쪽 패널 크기 설정
+        leftPanel.setLayout(new BorderLayout());
+        add(leftPanel, BorderLayout.WEST); // 왼쪽 패널을 프레임의 서쪽에 추가
 
         // Right Panels
         topRightPanel = new JPanel(new BorderLayout());
