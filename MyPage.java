@@ -65,7 +65,7 @@ public class MyPage extends JFrame {
         add(buttonPanel, BorderLayout.CENTER); // 버튼 패널을 프레임의 중앙에 추가
 
         // 각 카테고리 버튼 생성
-        String[] buttons = {"내 가게 정보 보기", "메뉴 추가하기", "내 가게 통계정보 보기"};
+        String[] buttons = {"내 가게 정보 보기", "내 가게 통계정보 보기"};
 
         // 각 카테고리 버튼 생성 및 추가
         GridBagConstraints gbc = new GridBagConstraints();
@@ -133,11 +133,8 @@ public class MyPage extends JFrame {
                     case "내 가게 정보 보기":
                         new MyStoreInfo();
                         break;
-                    case "메뉴 추가하기":
-                        new CreateAdminPanel();
-                        break;
                     case "내 가게 통계정보 보기":
-                        new ViewStatistics();
+                        new ReviewStatic();
                         break;
                 }
             }
