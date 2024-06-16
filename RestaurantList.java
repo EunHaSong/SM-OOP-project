@@ -148,6 +148,15 @@ public class RestaurantList extends JFrame {
                     String imageFileName = fields[9].trim();
 
                     restaurants.add(new Restaurant(name, rating, reviewCount, mainDish, address, hours, breakTime, holidays, imageFileName));
+
+                    // 가게 이름에 따라 특정 값을 반환
+                    if (name.equals("포36거리")) {
+                        System.out.println(1);
+                    } else if (name.equals("홍곱창")) {
+                        System.out.println(2);
+                    } else if (name.equals("을의커피")) {
+                        System.out.println(3);
+                    }
                 }
             }
         } catch (IOException e) {
