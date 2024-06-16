@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -35,12 +36,24 @@ class AdminRS extends JPanel {
        profile.setPreferredSize(new Dimension(frameWidth, (int) (200 * 2 / 3.0))); // 크기 설정
        profile.setBackground(Color.WHITE); // 배경색 설정(흰색)
 
-       // 버튼 생성 (메인화면으로 돌아갈 수 있도록)
+       // 버튼 생성 (마이페이지로 돌아갈 수 있도록)
        ImageIcon backIcon = new ImageIcon("C:\\yeons\\java\\final\\images\\back2main.jpeg");
        Image backImage = backIcon.getImage().getScaledInstance(55, 55, Image.SCALE_SMOOTH); // 사진 크기 설정
        back2main = new JButton(new ImageIcon(backImage));
        back2main.setPreferredSize(new Dimension(55, 55)); // 크기 설정
        addHoverEffect(back2main);
+
+       // back2main 버튼에 ActionListener 추가
+       back2main.addActionListener(e -> {
+        // MyPage 생성 및 보이기
+        AdminTPS mainFrame = new AdminTPS("관리자 화면");
+        FirstTimeMyPage mypage = new FirstTimeMyPage(null);
+        mainFrame.getLeftPanel().add(mypage, BorderLayout.CENTER);
+
+        // 현재 프레임 닫기
+        SwingUtilities.getWindowAncestor(this).dispose();
+    });
+
 
        // 매장 간판 레이블 생성
        Image signImage = db.signIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH); // 사진 크기 설정
